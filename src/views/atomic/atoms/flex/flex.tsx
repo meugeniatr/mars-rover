@@ -1,4 +1,4 @@
-import FlexProps from "./flexTypes";
+import FlexProps from "./flexProps";
 
 const Flex = (props: FlexProps) => (
   <div

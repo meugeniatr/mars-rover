@@ -1,10 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+  // @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+  html, body, .root {
+    height: 100%;
+  }
 
   html {   
-    --baltic-sea: #282c34;
+    --baltic-sea: hsl(220,13%,18%);
+    --aqua-island: hsl(176.2,74.3%,58.8%);
 
     --font-size-extra-small: 12px;
     --font-size-small: 14px;
@@ -30,7 +35,7 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--baltic-sea);
     color: white;
     font-family: 'Orbitron', sans-serif;    
-    margin: 0;
+    margin: 0 40px;
 
     *,
     *:before,
@@ -38,24 +43,22 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     }
 
-    width: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
+  }
 
-html, body {
-  height: 100%;
-}
+  footer {
+    margin: auto 40px 0 40px;
+  }
 
+  a {
+    color: var(--aqua-island);
+  }
 
-a {
-  color: #61dafb;
-}
-
-p {
+  p {
   margin-block-end: 10px;
   margin-block-start: 10px;
-}
+  }
 `;
 
 export default GlobalStyles;
