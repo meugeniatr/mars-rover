@@ -5,11 +5,11 @@ import Flex from "../flex/flex";
 import Typography from "../typography/typography";
 import textareaProps from "./textareaProps";
 
-const TextArea: React.FC<textareaProps> = ({ input }): ReactElement => {
-  const [comment, setComment] = useState(input);
+const TextArea: React.FC<textareaProps> = ({ onClick }): ReactElement => {
+  const [input, setInput] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(event.target.value);
+    setInput(event.target.value);
   };
 
   return (
@@ -20,8 +20,12 @@ const TextArea: React.FC<textareaProps> = ({ input }): ReactElement => {
       alignItems="center"
     >
       <BlueTxt>Set your instructions, please</BlueTxt>
-      <TextAreaInput value={comment} onChange={handleChange} />
-      <Button color="var(--aqua-island)" radius="4px" onClick={() => {}}>
+      <TextAreaInput value={input} onChange={handleChange} />
+      <Button
+        color="var(--aqua-island)"
+        radius="4px"
+        onClick={() => onClick(input)}
+      >
         <Typography fontSize="var(--font-size-medium)" color="white">
           Move
         </Typography>

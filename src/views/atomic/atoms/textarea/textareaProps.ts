@@ -1,3 +1,3 @@
 export default interface textareaProps {
-  input: string | "undefined";
+  onClick: (input: string) => void;
 }
