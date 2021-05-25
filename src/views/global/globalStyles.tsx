@@ -1,15 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-  // @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
-
   html, body, .root {
     height: 100%;
   }
 
   html {   
     --baltic-sea: hsl(220,13%,18%);
-    --aqua-island: hsl(176.2,74.3%,58.8%);
 
     --font-size-extra-small: 12px;
     --font-size-small: 14px;
@@ -32,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
     background-color: var(--baltic-sea);
     color: white;
     font-family: 'Orbitron', sans-serif;    
@@ -48,11 +46,11 @@ const GlobalStyles = createGlobalStyle`
   }
 
   footer {
-    margin: auto 40px 0 40px;
+    margin: 40px 0 0 20px;
   }
 
   a {
-    color: var(--aqua-island);
+    color: white;
   }
 
   p {

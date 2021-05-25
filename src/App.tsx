@@ -3,82 +3,78 @@ import logo from "./views/static/ufo-logo.svg";
 import Flex from "./views/atomic/atoms/flex/flex";
 import Logo from "./views/atomic/atoms/animation/logo";
 import TextArea from "./views/atomic/atoms/textarea/textarea";
-import earth from "./views/static/earth.svg";
 import styled from "styled-components";
 import Playfield from "./views/atomic/molecules/playfield/playfield";
 import Typography from "./views/atomic/atoms/typography/typography";
-import { useState } from "react";
-import Earth from "./views/atomic/atoms/animation/earth";
+import React, { useState } from "react";
+import "./constants/fonts/Orbitron/font.css";
 
-const App = () => {
+const App = (): React.ReactElement => {
   //States
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState([""]);
   const directions = ["N", "E", "S", "W"];
+
   //Functions
   const onClick = (inputTextarea: string) => {
-    // setResult(inputTextarea);
-
     const parsed = parseInput(inputTextarea);
-    if (!parsed) {
+    if (parsed == null) {
       return;
     }
+
     const { map, rovers } = parsed;
 
     const res = rovers.map((rover) => {
-      console.log(rover);
-      return executeCommand(rover, map);
+      const resRover = executeCommand(rover, map);
+      return `${resRover.x} ${resRover.y} ${resRover.direction}`;
     });
-    console.log(res);
+
+    setResult(res);
   };
 
   const parseInput = (input: string) => {
     const commands = input.split("\n");
-    let ret = {};
-    var reMap = /^\d \d$/;
-    var reRover = /^\d \d [NESW]$/;
-    var reCommand = /^[LRM]*$/;
+    const reMap = /^\d \d$/;
+    const reRover = /^\d \d [NESW]$/;
+    const reCommand = /^[LRM]*$/;
+    let errors: string[] = [];
 
     if (commands.length < 3) {
-      setResult("input must be at least 3 lines");
+      setResult(["input must be at least 3 lines"]);
       return null;
     }
 
-    if (commands.length % 2 == 0) {
-      setResult("Line missing in input");
+    if (commands.length % 2 === 0) {
+      setResult(["Line missing in input"]);
       return null;
     }
 
-    var map = { x: 0, y: 0 };
-    var curerntRover = 0;
-    var rovers: any[] = [];
+    const map = { x: 0, y: 0 };
+    let currentRover = 0;
+    const rovers: any[] = [];
 
     commands.forEach((element: string, index: number) => {
       if (index === 0) {
         // Map size
         if (reMap.exec(element) == null) {
-          setResult("Invalid map size");
-          return null;
+          errors.push(`Invalid map size. Line ${index + 1}: ${element}`);
         }
         const mapInputs = element.split(" ");
         map.x = parseInt(mapInputs[0]);
         map.y = parseInt(mapInputs[1]);
-      } else if (index % 2 == 0) {
+      } else if (index % 2 === 0) {
         // Commands of the rover
-        console.log(element);
         if (reCommand.exec(element) == null) {
-          setResult(`Invalid rover position: ${element}`);
-          return null;
+          errors.push(`Invalid rover command. Line ${index + 1}: ${element}`);
         }
 
-        rovers[0].commands = element.split("");
-        curerntRover++;
+        rovers[currentRover].commands = element.split("");
+        currentRover++;
       } else {
         // Rover
         if (reRover.exec(element) == null) {
-          setResult(`Invalid rover position: ${element}`);
-          return null;
+          errors.push(`Invalid rover position. Line ${index + 1}: ${element}`);
         }
-        let rover = { x: 0, y: 0, direction: "" };
+        const rover = { x: 0, y: 0, direction: "" };
         const roverInput = element.split(" ");
         rover.x = parseInt(roverInput[0]);
         rover.y = parseInt(roverInput[1]);
@@ -87,6 +83,10 @@ const App = () => {
       }
     });
 
+    if (errors.length > 0) {
+      setResult(errors);
+      return null;
+    }
     return { map: map, rovers: rovers };
   };
 
@@ -136,7 +136,7 @@ const App = () => {
     <>
       <GlobalStyles />
       <header>
-        <Flex container flexDirection="row" margin="30px">
+        <Flex container flexDirection="row" margin="15px">
           <Logo src={logo} alt="Mars visitor" />
           <h1>Welcome to Mars!</h1>
         </Flex>
@@ -150,28 +150,34 @@ const App = () => {
             complete view of the surrounding terrain to send back to Earth.{" "}
           </p>
           <p>
-            A rover's position and location is represented by a combination of x
-            and y co-ordinates and a letter representing one of the four
+            A rover&apos;s position and location is represented by a combination
+            of x and y co-ordinates and a letter representing one of the four
             cardinal compass points. The plateau is divided up into a grid to
             simplify navigation. An example position might be 0, 0, N, which
             means the rover is in the bottom left corner and facing North. In
             order to control a rover, NASA sends a simple string of letters.
           </p>
           <p>
-            The possible letters are 'L', 'R' and 'M'. 'L' and 'R' makes the
-            rover spin 90 degrees left or right respectively, without moving
-            from its current spot. 'M' means move forward one grid point, and
+            The possible letters are &apos;L&apos;, &apos;R&apos; and
+            &apos;M&apos;. &apos;L&apos; and &apos;R&apos; makes the rover spin
+            90 degrees left or right respectively, without moving from its
+            current spot. &apos;M&apos; means move forward one grid point, and
             maintain the same heading.
           </p>
           <Flex
             container
             flexDirection="row"
+            alignItems="flex-start"
             justifyContent="space-around"
-            alignItems="center"
+            margin="40px 0 0 0"
           >
-            <Earth src={earth} />
-            <Typography>{result}</Typography>
-            <Playfield />
+            <Playfield>
+              {result.map((element) => (
+                <Flex>
+                  <Typography>{element}</Typography>
+                </Flex>
+              ))}
+            </Playfield>
             <TextArea onClick={onClick} />
           </Flex>
         </body>
@@ -183,7 +189,7 @@ const App = () => {
           from{" "}
           <a href="https://www.flaticon.com/" title="Flaticon">
             www.flaticon.com
-          </a>
+          </a>{" "}
           Photo by{" "}
           <a
             href="https://www.pexels.com/@kindelmedia?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels"

@@ -1,3 +1,4 @@
+import React from "react";
 import buttonProps from "./buttonProps";
 
 const Button: React.FC<buttonProps> = ({

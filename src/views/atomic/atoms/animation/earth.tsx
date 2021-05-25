@@ -12,12 +12,17 @@ const breatheAnimation = keyframes`
 }`;
 
 const Earth = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-grow: 2;
   animation-name: ${breatheAnimation};
   animation-duration: 15s;
   animation-iteration-count: infinite;
-  height: 8vmin;
+  height: 12vmin;
   pointer-events: none;
-  margin: 0 10px;
+  margin-top: -15px;
+  margin-left: -15px;
 `;
 
 export default Earth;
