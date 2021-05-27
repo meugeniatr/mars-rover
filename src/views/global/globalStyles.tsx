@@ -56,6 +56,7 @@ const GlobalStyles = createGlobalStyle`
   p {
   margin-block-end: 10px;
   margin-block-start: 10px;
+  font-family: 'Lato', sans-serif;    
   }
 `;
 
